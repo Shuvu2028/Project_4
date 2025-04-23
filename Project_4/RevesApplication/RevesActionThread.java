@@ -54,6 +54,15 @@ public class RevesActionThread extends ActionThread
         disks = disksToUse;
         movesMade = 0;
         moveString = "";
+        this.a = new Pole("a", disks);
+        this.b = new Pole("b", disks);
+        this.c = new Pole("c", disks);
+        this.d = new Pole("d", disks);
+        for (int i = 0; i < disks; i++)
+        {
+            Disk e = new Disk(1); //should I put a different argument than 1 for the disk size?
+            a.addDisk(e);
+        }
 
         // ADD INITIALIZATION CODE HERE
 
@@ -62,6 +71,7 @@ public class RevesActionThread extends ActionThread
 
     public void executeApplication()
     {
+        reves(disks, a, d, b, c);
         // ADD CODE THAT WILL DO A SINGLE EXECUTION
     }
 
@@ -73,8 +83,9 @@ public class RevesActionThread extends ActionThread
      */
     public void moveDisk(Pole from, Pole to)
     {
-        Disk toMove = null;
-        
+        Disk d = from.removeDisk();
+        to.addDisk(d);
+        Disk toMove = d;
         // ADD CODE HERE TO MOVE A DISK FROM ONE POLE TO THE OTHER
 
         movesMade++;
@@ -84,6 +95,46 @@ public class RevesActionThread extends ActionThread
                         + " to " + to.getName() ;
                         
         animationPause();            
+    }
+
+    public void towersOfHanoi(int numDisks, Pole from, Pole extra, Pole to)
+    {
+        if (numDisks == 1)
+        {
+            moveDisk(from, to);
+        }
+        if (numDisks > 1)
+        {
+            int totalDisks = disks;
+            towersOfHanoi(numDisks - 1, from, to, extra);
+            moveDisk(from, to);
+            System.out.println("Move " + from +"to " + to);
+            towersOfHanoi(numDisks - 1, extra, from, to);
+        }
+    }
+
+    public int computeK(int n) {
+        int k = 1;
+        while (n > k * (k + 1) / 2)
+        {
+            k++;
+        }
+        return k;
+    }
+
+    public void reves(int numDisks, Pole from, Pole to, Pole extraTwo, Pole extraThree)
+    {
+        int k = computeK(numDisks);
+        if (numDisks == 1)
+        {
+            moveDisk(from, to);
+        }
+        if (numDisks > 1)
+        {
+            reves(numDisks - k, from, extraTwo, to, extraThree);
+            towersOfHanoi(k, from, extraThree, to);
+            reves(numDisks - k, extraTwo, to, extraThree, from);
+        }
     }
 
     
