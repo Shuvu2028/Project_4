@@ -58,9 +58,9 @@ public class RevesActionThread extends ActionThread
         this.b = new Pole("b", disks);
         this.c = new Pole("c", disks);
         this.d = new Pole("d", disks);
-        for (int i = 0; i < disks; i++)
+        for (int i = disks; i >= 1; i--)
         {
-            Disk e = new Disk(1); //should I put a different argument than 1 for the disk size?
+            Disk e = new Disk(i); //should I put a different argument than 1 for the disk size?
             a.addDisk(e);
         }
 
